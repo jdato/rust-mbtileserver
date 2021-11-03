@@ -110,9 +110,12 @@ pub async fn get_service(
 ) -> Result<Response<Body>> {
     let host = get_host(&request);
 
-    if !is_host_valid(&host, &allowed_hosts) {
-        return Ok(forbidden());
-    };
+    println!("Service reached.");
+
+    // FIXME
+    // if !is_host_valid(&host, &allowed_hosts) {
+    //     return Ok(forbidden());
+    // };
 
     let host = host.unwrap();
     let uri = request.uri();

@@ -24,7 +24,7 @@ pub fn get_app<'a, 'b>() -> App<'a, 'b> {
             Arg::with_name("directory")
                 .short("d")
                 .long("directory")
-                .default_value("./tiles")
+                .default_value("/tiles")
                 .help("Tiles directory\n")
                 .takes_value(true),
         )
@@ -39,7 +39,7 @@ pub fn get_app<'a, 'b>() -> App<'a, 'b> {
         .arg(
             Arg::with_name("allowed_hosts")
                 .long("allowed-hosts")
-                .default_value("localhost, 127.0.0.1, [::1]")
+                .default_value("*") // was localhost, 127.0.0.1, [::1]
                 .help("A comma-separated list of allowed hosts")
                 .long_help("\"*\" matches all domains and \".<domain>\" matches all subdomains for the given domain\n")
                 .takes_value(true),
