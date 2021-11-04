@@ -73,7 +73,7 @@ pub fn parse(matches: ArgMatches) -> Result<Args> {
         let directory = PathBuf::from(directory_str);
         if !directory.is_dir() {
             return Err(Error::Config(format!(
-                "Directory does not exists: {}",
+                "Directory does not exist: {}",
                 directory_str
             )));
         }

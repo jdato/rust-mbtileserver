@@ -1,19 +1,28 @@
-FROM rust:1.54
+FROM rust:1.54 AS rust_builder
 
-WORKDIR /usr/src/mbtileserver
+WORKDIR /app
 
-# # Compile + Cache dependencies 
-# ADD Cargo.toml Cargo.toml
-# ADD Cargo.lock Cargo.lock
-# RUN mkdir src && \
-#     echo "fn main() { }" > src/main.rs && \
-#     cargo build --release
+# Compile + Cache dependencies 
+ADD Cargo.toml Cargo.toml
+ADD Cargo.lock Cargo.lock
+RUN mkdir src && \
+    echo "fn main() { }" > src/main.rs && \
+    cargo build --release
 
-COPY . .
+COPY src src
+COPY templates templates
+
+RUN cargo build --release
+# CMD ["./target/release/mbtileserver", "-d", "/app/tiles"]
+
+FROM debian:bullseye-slim
+
+RUN apt update
+RUN apt install libsqlite3-dev -y
+
+COPY --from=rust_builder /app/target/release/mbtileserver mbtileserver
 
 RUN mkdir /tiles
-COPY ../germany.mbtiles /tiles/germany.mbtiles
+COPY germany.mbtiles /tiles/germany.mbtiles
 
-RUN cargo install --path .
-
-CMD ["mbtileserver"]
+CMD ["./mbtileserver", "-d", "/tiles"]
