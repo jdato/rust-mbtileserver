@@ -8,8 +8,14 @@ then
 fi
 
 # Remove unused / stopped container and dangling untagged images
-docker rm $(docker ps -a -q)
-docker rmi $(docker images | grep '^<none>' | awk '{print $3}')
+docker rm $(docker ps -a -q) &>> mbtile_server_build.log
+if [ $? -ne 0 ]; then
+    echo 'No dangling containers found.'
+fi
+docker rmi $(docker images | grep '^<none>' | awk '{print $3}') &>> mbtile_server_build.log
+if [ $? -ne 0 ]; then
+    echo 'No dangling images found.'
+fi
 
 # Build germany mbtiles file
 ./~/openmaptiles/quickstart.sh berlin # europe/germany
