@@ -22,6 +22,7 @@ mod utils;
 fn main() {
     pretty_env_logger::init_timed();
 
+    
     let args = match config::parse(config::get_app().get_matches()) {
         Ok(args) => args,
         Err(err) => {

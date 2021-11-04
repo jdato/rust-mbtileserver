@@ -13,7 +13,6 @@ COPY src src
 COPY templates templates
 
 RUN cargo build --release
-# CMD ["./target/release/mbtileserver", "-d", "/app/tiles"]
 
 FROM debian:bullseye-slim
 
